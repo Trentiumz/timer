@@ -21,12 +21,15 @@ function getTime(){
 
 var alarmTime;
 var timeText;
-var timerIntervalInMS = 30 * 1000;
+var timerDoneText;
+var timerIntervalInMS = 30 * 60 * 1000;
+var headerRevert = 30 * 1000
 var alarmSound;
 
 window.onload = function(){
   alarmTime = getTime() + timerIntervalInMS;
   timeText = document.getElementById("timer");
+  timerDoneText = document.getElementById("done");
   alarmSound = new sound("alarm.mp3");
   setInterval(changeTime, 80);
 }
@@ -44,7 +47,20 @@ function changeTime(){
   timeText.innerHTML = minutes + ":" + seconds;
 }
 
+function revertHeader(){
+  timerDoneText.innerHTML = "";
+}
+
 function timerDone(){
   alarmSound.play();
   alarmTime = getTime() + timerIntervalInMS;
+  var notification = new Notification("Timer Done!");
+  timerDoneText.innerHTML = "Your Timer is Done!";
+  setTimeout(revertHeader, headerRevert);
+
+  var path = window.location.pathname;
+  console.log(path)
+  window.open(path, '').close();
+  window.open(path, '').focus();
+  window.close();
 }
